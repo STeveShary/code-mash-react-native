@@ -7,13 +7,14 @@ import {
 
 class HomeScreen extends React.Component {
     static navigationOptions = {
-      title: 'Home'
+      title: 'CodeMash 2017'
     };
   
     render() {
       return (
         <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
           <Text onPress={this._handlePress('Schedule')}>View Schedule!</Text>
+          <Text onPress={this._handlePress('Speaker')}>Speakers</Text>
         </View>
       )
     }
