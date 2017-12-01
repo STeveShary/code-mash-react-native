@@ -84,7 +84,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  sessionTitle: {},
+  sessionTitle: {
+    fontWeight: "500",
+    fontSize: 30,
+  },
   link: {
     fontWeight: "200",
     color: 'blue',
