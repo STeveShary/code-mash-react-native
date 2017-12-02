@@ -18,7 +18,12 @@ export default StackNavigator({
   Home: { screen: HomeScreen },
   Schedule: { screen: ScheduleScreen },
   Session: { screen: SessionScreen },
-  Speaker: { screen: SpeakerScreen },
+  Speaker: {
+    screen: SpeakerScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.speaker.FirstName} ${navigation.state.params.speaker.LastName}`,
+    }),
+  },
 });
 
 const styles = StyleSheet.create({

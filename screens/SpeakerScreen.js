@@ -8,6 +8,8 @@ import {
   ScrollView,
 } from 'react-native';
 
+import {getSpeaker} from '../dataService';
+
 const speakerInfo = {
   "Id": "f62ed587-5dab-4818-b0f3-398f7975961a",
   "FirstName": "Christopher",
@@ -26,12 +28,18 @@ class SessionScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.speakerInfo = speakerInfo;
+    this.speaker = props.navigation.state.params.speaker;
     this._openBlog = this._openBlog.bind(this);
+    this._openGithub = this._openGithub.bind(this);
+    this._openLinkedIn = this._openLinkedIn.bind(this);
+    this._openTwitter = this._openTwitter.bind(this);
   }
 
-  static navigationOptions = {
-    title: 'Speaker'
+  static navigationOptions = ({ navigation }) => {
+    const {state} = navigation;
+    return {
+      title: '',
+    };
   };
 
   render() {
@@ -39,17 +47,15 @@ class SessionScreen extends React.Component {
       <ScrollView style={styles.container}>
         <View style={styles.headerContainer}>
           <Image style={styles.bioImage}
-            source={{ uri: "https:" + speakerInfo.GravatarUrl }} />
+            source={{ uri: "https:" + this.speaker.GravatarUrl }} />
           <View style={styles.nameContainer}>
-            <Text style={styles.speakerName}>{speakerInfo.FirstName}</Text>
-            <Text style={styles.speakerName}>{speakerInfo.LastName}</Text>
-           {speakerInfo.BlogUrl && <Text style={styles.link} onPress={this._openBlog}>Blog</Text>}
-           {speakerInfo.LinkedInProfile && <Text style={styles.link} onPress={this._openLinkedIn}>LinkedIn</Text>}
-           {speakerInfo.TwitterLink && <Text style={styles.link} onPress={this._openTwitter}>Twitter</Text>}
-           {speakerInfo.GitHubLink && <Text style={styles.link} onPress={this._openGithub}>GitHub</Text>}
+           {this.speaker.BlogUrl && <Text style={styles.link} onPress={this._openBlog}>Blog</Text>}
+           {this.speaker.LinkedInProfile && <Text style={styles.link} onPress={this._openLinkedIn}>LinkedIn</Text>}
+           {this.speaker.TwitterLink && <Text style={styles.link} onPress={this._openTwitter}>Twitter</Text>}
+           {this.speaker.GitHubLink && <Text style={styles.link} onPress={this._openGithub}>GitHub</Text>}
           </View>
         </View>
-        <Text style={styles.bioContainer}>{speakerInfo.Biography}</Text>
+        <Text style={styles.bioContainer}>{this.speaker.Biography}</Text>
         <View style={styles.sessionContainer}>
           <Text style={styles.sessionTitle}>Sessions</Text>
           <Text>Sessions to come!</Text>
@@ -59,19 +65,19 @@ class SessionScreen extends React.Component {
   }
 
   _openBlog = () => {
-      Linking.openURL(this.speakerInfo.BlogUrl);
+      Linking.openURL(this.speaker.BlogUrl);
   }
 
   _openLinkedIn = () => {
-    Linking.openURL(this.speakerInfo.LinkedInProfile)
+    Linking.openURL(this.speaker.LinkedInProfile)
   }
 
   _openTwitter = () => {
-    Linking.openURL(this.speakerInfo.TwitterLink)
+    Linking.openURL(this.speaker.TwitterLink)
   }
 
   _openGithub = () => {
-    Linking.openURL(this.speakerInfo.GitHubLink)
+    Linking.openURL(this.speaker.GitHubLink)
   }
 
   _handlePress = () => {
@@ -87,9 +93,13 @@ const styles = StyleSheet.create({
   sessionTitle: {
     fontWeight: "500",
     fontSize: 30,
+    backgroundColor: "blue",
+    color: "white",
+    paddingLeft: 20,
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   link: {
-    fontWeight: "200",
     color: 'blue',
     paddingTop: 10,
     fontSize: 20,
