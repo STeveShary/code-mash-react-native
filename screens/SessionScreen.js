@@ -3,19 +3,25 @@ import {
   Text,
   View,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 
 class SessionScreen extends React.Component {
-    static navigationOptions = {
-      title: 'Session'
-    };
+
+    constructor(props) {
+      super(props);
+      this.session = props.navigation.state.params.session;
+    }
   
     render() {
       return (
-        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-          <Text>This is where you can view information on a session</Text>
-          <Text onPress={this._handlePress}>Go Home!</Text>
-        </View>
+        <ScrollView style={styles.container}>
+          <Text style={styles.title}>{this.session.Title}</Text>
+          <Text style={styles.name}>{this.session.Speakers[0].FirstName} {this.session.Speakers[0].LastName}</Text>
+          <Text style={styles.room}>Room: {this.session.Room}</Text>
+          <Text style={styles.abstractTitle}>Summary:</Text>
+          <Text style={styles.abstract}>{this.session.Abstract}</Text>
+        </ScrollView>
       )
     }
   
@@ -23,5 +29,15 @@ class SessionScreen extends React.Component {
       this.props.navigation.goBack();
     }
   }
+
+
+const styles = StyleSheet.create({
+
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#fff',
+  },
+});
 
   export default SessionScreen;

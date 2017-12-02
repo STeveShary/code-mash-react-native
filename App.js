@@ -17,7 +17,12 @@ import SpeakerScreen from './screens/SpeakerScreen';
 export default StackNavigator({
   Home: { screen: HomeScreen },
   Schedule: { screen: ScheduleScreen },
-  Session: { screen: SessionScreen },
+  Session: {
+    screen: SessionScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: "Session",
+    }),
+  },
   Speaker: {
     screen: SpeakerScreen,
     navigationOptions: ({ navigation }) => ({

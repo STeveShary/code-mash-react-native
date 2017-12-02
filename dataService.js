@@ -1,4 +1,32 @@
 
+let speakers;
+let sessions;
+
+const speakerPromise = fetch('https://speakers.codemash.org/api/SpeakersData')
+    .then(res => res.json())
+    .then(json => speakers = json);
+
+// const speakers = await getSpeakerData();
+// const sessions = await fetch('https://speakers.codemash.org/api/SessionsData').json();
+
+
+export const getSession = (id) => {
+    return {
+        "Id": 7113,
+        "SessionTime": "0001-01-01T00:00:00",
+        "SessionStartTime": "0001-01-01T00:00:00",
+        "SessionEndTime": "0001-01-01T00:00:00",
+        "Room": null,
+        "Rooms": null,
+        "Title": "Devops Zen: Injecting Automated Tests into Infrastructure",
+        "Abstract": "Devops zen is to make infrastructure predicable.  At Kroger, we use Nginx as a reverse proxy to route traffic with a configuration that is thousands of lines long with pull requests from dozens of teams. Even with this scale, we are still able to complete on-demand deployments to multiple environments that serve dozens of domains and route to over 50 applications clusters with zero downtime.  We show an open source framework, SnowGlobe, which allows us to simulate and test every possible traffic routing situation before we deploy. We use a full CI/CD pipeline with 7,000+ tests run for every commit. If boring is zen, then our meditation is automated infrastructure testing.",
+        "SessionType": "General Session",
+        "Tags": ["JavaScript", "Testing", "Java"],
+        "Category": "DevOps",
+        "Speakers": [{ "Id": "36e05280-a3a9-4435-82f6-50afbed4a388", "FirstName": "Stephen", "LastName": "Shary", "GravatarUrl": "//www.gravatar.com/avatar/3d322357152119a5b27e61db7dd636c0" }]
+    }
+}
+
 export const getSpeaker = (id) => {
     return {
         "Id": "f62ed587-5dab-4818-b0f3-398f7975961a",
