@@ -20,20 +20,22 @@ class HomeScreen extends React.Component {
     render() {
         if (!this.state.dataLoaded) {
             return (
-              <AppLoading
-                startAsync={ downloadDataLocally  }
-                onFinish={() => this.setState({ dataLoaded: true })}
-                onError={console.warn}
-              />
+                <AppLoading
+                    startAsync={downloadDataLocally}
+                    onFinish={() => this.setState({ dataLoaded: true })}
+                    onError={console.warn}
+                />
             )
         }
         return (
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-                <Button onPress={this._handlePress('Session', 
-                    { session: 7113})}
+                <Button onPress={this._handlePress('Session',
+                    { session: 7113 })}
                     title="View Session!" />
                 <Button onPress={this._handlePress('Speaker',
-                    { speaker: '5c2198a7-9081-4686-9a1b-840d758e405e' })} title="Speakers" />
+                    {
+                        speaker: { "Id": "fd245182-1b3b-45ac-93f6-cac098581200", "FirstName": "Priya", "LastName": "Rajagopal", "GravatarUrl": "//www.gravatar.com/avatar/01c9d267e78a30758e8ce4a8735833e5" }
+                    })} title="Speakers" />
             </View>
         )
     }

@@ -14,14 +14,14 @@ class SessionScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.speakerId = props.navigation.state.params.speaker;
+    this.speakerId = props.navigation.state.params.speaker.Id;
     this._openBlog = this._openBlog.bind(this);
     this._openGithub = this._openGithub.bind(this);
     this._openLinkedIn = this._openLinkedIn.bind(this);
     this._openTwitter = this._openTwitter.bind(this);
   }
 
-  state = { speakerLoaded: false };
+  state = { loaded: false };
 
   componentWillMount() {
     this.loadSpeaker(this.speakerId);
@@ -29,14 +29,11 @@ class SessionScreen extends React.Component {
 
   loadSpeaker(speakerId) {
     getSpeaker(speakerId)
-      .then(speaker => {
-        this.setState({ speaker, speakerLoaded: true });
-      });
+      .then(speaker => this.setState({ speaker, loaded: true }));
   }
 
   render() {
-    if (this.state.speakerLoaded) {
-      console.log("Loading speaker...")
+    if (this.state.loaded) {
       console.log(this.state.speaker, null, 2);
       return (
         <ScrollView style={styles.container}>
@@ -44,10 +41,10 @@ class SessionScreen extends React.Component {
             <Image style={styles.bioImage}
               source={{ uri: "https:" + this.state.speaker.GravatarUrl }} />
             <View style={styles.nameContainer}>
-              {this.state.speaker.BlogUrl && <Text style={styles.link} onPress={this._openBlog}>Blog</Text>}
-              {this.state.speaker.LinkedInProfile && <Text style={styles.link} onPress={this._openLinkedIn}>LinkedIn</Text>}
-              {this.state.speaker.TwitterLink && <Text style={styles.link} onPress={this._openTwitter}>Twitter</Text>}
-              {this.state.speaker.GitHubLink && <Text style={styles.link} onPress={this._openGithub}>GitHub</Text>}
+              {!!this.state.speaker.BlogUrl && <Text style={styles.link} onPress={this._openBlog}>Blog</Text>}
+              {!!this.state.speaker.LinkedInProfile && <Text style={styles.link} onPress={this._openLinkedIn}>LinkedIn</Text>}
+              {!!this.state.speaker.TwitterLink && <Text style={styles.link} onPress={this._openTwitter}>Twitter</Text>}
+              {!!this.state.speaker.GitHubLink && <Text style={styles.link} onPress={this._openGithub}>GitHub</Text>}
             </View>
           </View>
           <Text style={styles.bioContainer}>{this.state.speaker.Biography}</Text>

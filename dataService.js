@@ -31,9 +31,5 @@ export const getSession = (id) =>
 export const getSpeaker = (id) =>
     FileSystem.readAsStringAsync(FileSystem.documentDirectory + 'speakers.json')
         .then(speakersString => {
-            const matchingSpeakers = speakers.filter(speaker => speaker.Id === id);
-            console.log(matchingSpeakers, null, 2);
-            return (matchingSpeakers && matchingSpeakers.length > 0)
-                ? matchingSpeakers[0]
-                : {};
+            return speakers.find(speaker => speaker.Id === id);
         });
