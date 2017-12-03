@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppLoading } from 'expo';
 import {
     Text,
     View,
@@ -6,21 +7,33 @@ import {
     Button,
 } from 'react-native';
 
-import { getSpeaker, getSession } from '../dataService';
+import { downloadDataLocally } from '../dataService';
 
 class HomeScreen extends React.Component {
+
+    state = { dataLoaded: false };
+
     static navigationOptions = {
         title: 'CodeMash 2018'
     };
 
     render() {
+        if (!this.state.dataLoaded) {
+            return (
+              <AppLoading
+                startAsync={ downloadDataLocally  }
+                onFinish={() => this.setState({ dataLoaded: true })}
+                onError={console.warn}
+              />
+            )
+        }
         return (
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                 <Button onPress={this._handlePress('Session', 
-                    { session: getSession(7113)})}
+                    { session: 7113})}
                     title="View Session!" />
                 <Button onPress={this._handlePress('Speaker',
-                    { speaker: getSpeaker('f62ed587-5dab-4818-b0f3-398f7975961a') })} title="Speakers" />
+                    { speaker: '5c2198a7-9081-4686-9a1b-840d758e405e' })} title="Speakers" />
             </View>
         )
     }

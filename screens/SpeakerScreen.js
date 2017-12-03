@@ -8,60 +8,73 @@ import {
   ScrollView,
 } from 'react-native';
 
+import { getSpeaker } from '../dataService';
+
 class SessionScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.speaker = props.navigation.state.params.speaker;
+    this.speakerId = props.navigation.state.params.speaker;
     this._openBlog = this._openBlog.bind(this);
     this._openGithub = this._openGithub.bind(this);
     this._openLinkedIn = this._openLinkedIn.bind(this);
     this._openTwitter = this._openTwitter.bind(this);
   }
 
-  static navigationOptions = ({ navigation }) => {
-    const {state} = navigation;
-    return {
-      title: '',
-    };
-  };
+  state = { speakerLoaded: false };
+
+  componentWillMount() {
+    this.loadSpeaker(this.speakerId);
+  }
+
+  loadSpeaker(speakerId) {
+    getSpeaker(speakerId)
+      .then(speaker => {
+        this.setState({ speaker, speakerLoaded: true });
+      });
+  }
 
   render() {
-    return (
-      <ScrollView style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Image style={styles.bioImage}
-            source={{ uri: "https:" + this.speaker.GravatarUrl }} />
-          <View style={styles.nameContainer}>
-           {this.speaker.BlogUrl && <Text style={styles.link} onPress={this._openBlog}>Blog</Text>}
-           {this.speaker.LinkedInProfile && <Text style={styles.link} onPress={this._openLinkedIn}>LinkedIn</Text>}
-           {this.speaker.TwitterLink && <Text style={styles.link} onPress={this._openTwitter}>Twitter</Text>}
-           {this.speaker.GitHubLink && <Text style={styles.link} onPress={this._openGithub}>GitHub</Text>}
+    if (this.state.speakerLoaded) {
+      console.log("Loading speaker...")
+      console.log(this.state.speaker, null, 2);
+      return (
+        <ScrollView style={styles.container}>
+          <View style={styles.headerContainer}>
+            <Image style={styles.bioImage}
+              source={{ uri: "https:" + this.state.speaker.GravatarUrl }} />
+            <View style={styles.nameContainer}>
+              {this.state.speaker.BlogUrl && <Text style={styles.link} onPress={this._openBlog}>Blog</Text>}
+              {this.state.speaker.LinkedInProfile && <Text style={styles.link} onPress={this._openLinkedIn}>LinkedIn</Text>}
+              {this.state.speaker.TwitterLink && <Text style={styles.link} onPress={this._openTwitter}>Twitter</Text>}
+              {this.state.speaker.GitHubLink && <Text style={styles.link} onPress={this._openGithub}>GitHub</Text>}
+            </View>
           </View>
-        </View>
-        <Text style={styles.bioContainer}>{this.speaker.Biography}</Text>
-        <View style={styles.sessionContainer}>
-          <Text style={styles.sessionTitle}>Sessions</Text>
-          <Text>Sessions to come!</Text>
-        </View>
-      </ScrollView>
-    )
+          <Text style={styles.bioContainer}>{this.state.speaker.Biography}</Text>
+          <View style={styles.sessionContainer}>
+            <Text style={styles.sessionTitle}>Sessions</Text>
+            <Text>Sessions to come!</Text>
+          </View>
+        </ScrollView>
+      )
+    }
+    return (<Text></Text>);
   }
 
   _openBlog = () => {
-      Linking.openURL(this.speaker.BlogUrl);
+    Linking.openURL(this.state.speaker.BlogUrl);
   }
 
   _openLinkedIn = () => {
-    Linking.openURL(this.speaker.LinkedInProfile)
+    Linking.openURL(this.state.speaker.LinkedInProfile)
   }
 
   _openTwitter = () => {
-    Linking.openURL(this.speaker.TwitterLink)
+    Linking.openURL(this.state.speaker.TwitterLink)
   }
 
   _openGithub = () => {
-    Linking.openURL(this.speaker.GitHubLink)
+    Linking.openURL(this.state.speaker.GitHubLink)
   }
 
   _handlePress = () => {
