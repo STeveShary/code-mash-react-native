@@ -18,6 +18,10 @@ export const downloadDataLocally = () => {
     return Promise.all([speakerPromise, sessionPromise]);
 }
 
+export const getAllSessions = () =>
+    FileSystem.readAsStringAsync(FileSystem.documentDirectory + 'sessions.json')
+        .then(sessionsString => JSON.parse(sessionsString));
+
 export const getSession = (id) =>
     FileSystem.readAsStringAsync(FileSystem.documentDirectory + 'sessions.json')
         .then(sessionsString => {

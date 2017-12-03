@@ -3,29 +3,74 @@ import {
   Text,
   View,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 
-class ScheduleScreen extends React.Component {
-    static navigationOptions = {
-      title: 'Schedule'
-    };
-  
-    render() {
-      return (
-        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-          <Text onPress={this._navigateToSession}>Session 1</Text>
-          <Text onPress={this._goBack}>Go Home!</Text>
-        </View>
-      )
-    }
+import { getAllSessions } from '../dataService';
 
-    _navigateToSession = () => {
-      this.props.navigation.navigate('Session');
-    }
-  
-    _goBack = () => {
-      this.props.navigation.goBack();
-    }
+class ScheduleScreen extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.loadSessions = this.loadSessions.bind(this);
+    this._navigateToSession = this._navigateToSession.bind(this);
+  }
+  static navigationOptions = {
+    title: 'Schedule'
+  };
+
+  state = { loaded: false };
+
+  componentWillMount() {
+    this.loadSessions();
   }
 
-  export default ScheduleScreen;
+  loadSessions() {
+    getAllSessions().then(sessions => 
+      this.setState({ sessions: sessions.map(session => Object.assign(session, {key: session.Id})), loaded: true }));
+  }
+
+  render() {
+    if (this.state.loaded) {
+      const rows = this.state.sessions.map(session => {
+        const id = session.Id;
+        return (
+          <View style={styles.sessionContainer}>
+          <Text style={styles.sessionTitle}>{session.Title}</Text>
+          </View>);
+      });
+      return (
+        <ScrollView style={styles.container}>
+            {rows}
+        </ScrollView>
+      )
+    }
+    return (<Text></Text>);
+  }
+
+  _navigateToSession = (session) => {
+    this.props.navigation.navigate('Session', { session });
+  }
+
+  _goBack = () => {
+    this.props.navigation.goBack();
+  }
+}
+
+const styles = StyleSheet.create({
+  sessionTitle: {
+    paddingLeft: 10,
+    fontWeight: "500",
+  },
+  sessionContainer: {
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#fff',
+  },
+});
+
+export default ScheduleScreen;
