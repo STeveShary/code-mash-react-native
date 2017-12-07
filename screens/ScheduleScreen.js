@@ -7,9 +7,10 @@ import {
     TouchableOpacity,
     SectionList,
 } from 'react-native';
-import { Icon } from 'react-native-elements'
+import {Icon} from 'react-native-elements'
 import _ from 'lodash';
 import moment from 'moment';
+import { COLORS } from '../globalStyles';
 
 import {getAllSessions, addToMySessions, removeFromMySessions} from '../dataService';
 
@@ -44,8 +45,10 @@ class ScheduleScreen extends React.Component {
     _groupSessions(sessions) {
         _.map(sessions, session =>
             Object.assign(session,
-                {formattedStart: this._getStartDateString(session),
-                key: session.Id}));
+                {
+                    formattedStart: this._getStartDateString(session),
+                    key: session.Id
+                }));
         const groupStarts = _.groupBy(sessions, (session) => session.formattedStart);
         return _.keys(groupStarts).map((formattedStart) => ({
             title: formattedStart,
@@ -73,18 +76,27 @@ class ScheduleScreen extends React.Component {
 
     renderSession(session) {
         return (
-                <TouchableOpacity key={session.Id} onPress={this._navigateToSession(session.Id)}
-                                  style={styles.sessionContainer}>
-                    {!session.selected && <Icon onPress={this.addSessionToMySchedule(session)} name='heart-outlined' type='entypo' color="#ff0003"/>}
-                    {session.selected && <Icon onPress={this.removeSessionFromMySchedule(session)} name='heart' type='entypo' color="#ff0003"/>}
+            <TouchableOpacity key={session.Id} onPress={this._navigateToSession(session.Id)}
+                              style={styles.sessionContainer}>
+                <View style={styles.sessionInfo}>
                     <Text style={styles.sessionTitle}>{session.Title}</Text>
-                    <Text style={styles.sessionSpeaker}>{session.Speakers[0].FirstName} {session.Speakers[0].LastName}</Text>
-                </TouchableOpacity>);
+                    <Text
+                        style={styles.sessionSpeaker}>{session.Speakers[0].FirstName} {session.Speakers[0].LastName}</Text>
+                </View>
+                <View style={styles.sessionLike}>
+                    {!session.selected &&
+                    <Icon onPress={this.addSessionToMySchedule(session)} name='heart-outlined' type='entypo'
+                          color="#ff0003"/>}
+                    {session.selected &&
+                    <Icon onPress={this.removeSessionFromMySchedule(session)} name='heart' type='entypo'
+                          color="#ff0003"/>}
+                </View>
+            </TouchableOpacity>);
     }
 
     renderHeader(section) {
         return (
-             <Text style={styles.timeSlotHeader}>Timeslot: {section.title}</Text>
+            <Text style={styles.timeSlotHeader}>{section.title}</Text>
 
         );
     }
@@ -107,25 +119,40 @@ class ScheduleScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    sessionInfo: {
+        flex: 8
+    },
+    sessionLike: {
+        flex: 1,
+        padding: 10,
+    },
     timeSlotHeader: {
+        padding: 10,
         fontSize: 20,
-        backgroundColor: "#477eff"
+        color: COLORS.WHITE,
+        backgroundColor: COLORS.BLUE,
     },
     sessionTitle: {
         fontSize: 15,
-        fontWeight: "500",
         paddingLeft: 10,
     },
+    sessionSpeaker: {
+        paddingTop: 5,
+      paddingLeft: 20,
+        fontSize: 12,
+    },
     sessionContainer: {
+        flex: 1,
+        flexDirection: "row",
         paddingTop: 5,
         paddingBottom: 10,
         margin: 3,
-        backgroundColor: "#a7b4ff"
+        backgroundColor: COLORS.WHITE,
     },
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.ORANGE,
     },
 });
 

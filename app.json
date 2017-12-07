@@ -10,9 +10,9 @@
     "primaryColor": "#cccccc",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/icon.png",
+      "image": "./assets/gearHead.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#f2f2f3"
     },
     "ios": {
       "supportsTablet": false

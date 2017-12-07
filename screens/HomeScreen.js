@@ -4,8 +4,10 @@ import {
     Text,
     View,
     StyleSheet,
-    Button,
+    Image,
 } from 'react-native';
+import { COLORS } from '../globalStyles';
+import { Button } from 'react-native-elements';
 
 import { downloadDataLocally } from '../dataService';
 
@@ -28,15 +30,18 @@ class HomeScreen extends React.Component {
             )
         }
         return (
-            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-                <Button onPress={this._handlePress('MySchedule')}
-                        title="My Schedule" />
-                <Button onPress={this._handlePress('Schedule')}
+            <View style={styles.mainContainer}>
+                <View style={styles.headerContainer}>
+                    <Image source={require('../assets/icon.png')}/>
+                </View>
+                <Button large buttonStyle={styles.navigationButton} onPress={this._handlePress('Schedule')}
                     title="Session Schedule" />
-                <Button onPress={this._handlePress('Session',
+                <Button large buttonStyle={styles.navigationButton} onPress={this._handlePress('MySchedule')}
+                        title="My Schedule" />
+                <Button large buttonStyle={styles.navigationButton} onPress={this._handlePress('Session',
                     { session: 7113 })}
                     title="View Session!" />
-                <Button onPress={this._handlePress('Speaker',
+                <Button large buttonStyle={styles.navigationButton} onPress={this._handlePress('Speaker',
                     {
                         speaker: { "Id": "fd245182-1b3b-45ac-93f6-cac098581200", "FirstName": "Priya", "LastName": "Rajagopal", "GravatarUrl": "//www.gravatar.com/avatar/01c9d267e78a30758e8ce4a8735833e5" }
                     })} title="Speakers" />
@@ -49,4 +54,18 @@ class HomeScreen extends React.Component {
     }
 }
 
+const styles = StyleSheet.create({
+    headerContainer: {
+        paddingTop: 20,
+        alignItems: 'center',
+    },
+    mainContainer: {
+        flex: 1,
+        backgroundColor: COLORS.WHITE,
+    },
+   navigationButton: {
+       marginTop: 5,
+       backgroundColor: COLORS.BLUE,
+   }
+});
 export default HomeScreen;
