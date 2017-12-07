@@ -10,7 +10,7 @@ import {
 import {Icon} from 'react-native-elements'
 import _ from 'lodash';
 import moment from 'moment';
-import { COLORS } from '../globalStyles';
+import {COLORS} from '../globalStyles';
 
 import {getAllSessions, addToMySessions, removeFromMySessions} from '../dataService';
 
@@ -74,14 +74,31 @@ class ScheduleScreen extends React.Component {
             .then(() => this.loadSessions());
     }
 
+    _getRoomsString(session) {
+        if (session.Rooms) {
+            return session.Rooms.reduce((cur, newRoom) => cur + ", " + newRoom);
+        }
+        return "";
+    }
+
+    _getSpeakersString(session) {
+        if (session.Speakers) {
+            return session.Speakers
+                .map(speaker => speaker.FirstName + " " + speaker.LastName)
+                .reduce((cur, speakerName) =>
+                cur + ", " + speakerName);
+        }
+        return "";
+    }
+
     renderSession(session) {
         return (
             <TouchableOpacity key={session.Id} onPress={this._navigateToSession(session.Id)}
                               style={styles.sessionContainer}>
                 <View style={styles.sessionInfo}>
                     <Text style={styles.sessionTitle}>{session.Title}</Text>
-                    <Text
-                        style={styles.sessionSpeaker}>{session.Speakers[0].FirstName} {session.Speakers[0].LastName}</Text>
+                        <Text style={styles.sessionSpeaker}>Presenter(s): {this._getSpeakersString(session)}</Text>
+                        <Text style={styles.sessionRoom}>Room(s): {this._getRoomsString(session)}</Text>
                 </View>
                 <View style={styles.sessionLike}>
                     {!session.selected &&
@@ -119,6 +136,11 @@ class ScheduleScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    sessionSecondLineInfo: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: 'space-between',
+    },
     sessionInfo: {
         flex: 8
     },
@@ -133,12 +155,17 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.BLUE,
     },
     sessionTitle: {
-        fontSize: 15,
+        fontSize: 17,
         paddingLeft: 10,
     },
+    sessionRoom: {
+        paddingLeft: 20,
+        paddingTop: 2,
+        fontSize: 12,
+    },
     sessionSpeaker: {
-        paddingTop: 5,
-      paddingLeft: 20,
+        paddingTop: 10,
+        paddingLeft: 20,
         fontSize: 12,
     },
     sessionContainer: {
