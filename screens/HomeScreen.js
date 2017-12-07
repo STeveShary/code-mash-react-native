@@ -29,6 +29,8 @@ class HomeScreen extends React.Component {
         }
         return (
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                <Button onPress={this._handlePress('MySchedule')}
+                        title="My Schedule" />
                 <Button onPress={this._handlePress('Schedule')}
                     title="Session Schedule" />
                 <Button onPress={this._handlePress('Session',
